@@ -1,0 +1,8 @@
+[
+  { "id": 1, "task": "Renew Florida Medical License", "priority": "P1", "time": "1 hour", "status": "Next Action", "context": "Computer/Phone", "firstStep": "Go to FL DOH license renewal portal → check expiration → gather CE documentation → submit renewal application", "done": false },
+  { "id": 2, "task": "Handle Apple Trade-In cancellation", "priority": "P1", "time": "15 min", "status": "Next Action", "context": "Computer/Phone", "firstStep": "Log into Apple account → Order History → check trade-in status → contact support if charge pending", "done": false },
+  { "id": 3, "task": "Activate Chase cash back offers", "priority": "P2", "time": "5 min", "status": "Next Action", "context": "Phone", "firstStep": "Open Chase app → My Account → Offers → Activate all available cash back deals", "done": false },
+  { "id": 4, "task": "Verify 401k transactions", "priority": "P2", "time": "15 min", "status": "Next Action", "context": "Computer", "firstStep": "Log into 401k portal → Make Changes/Pending Requests → Verify March 2 contribution posted", "done": false },
+  { "id": 5, "task": "Review Rocket Money Feb Report", "priority": "P2", "time": "15 min", "status": "Next Action", "context": "Computer", "firstStep": "Open Rocket Money email → review Feb spending patterns → compare to Jan → note anomalies", "done": false },
+  { "id": 6, "task": "Process Pay Day allocation (Mar 6)", "priority": "P2", "time": "30 min", "status": "Scheduled", "context": "Deep Work", "firstStep": "Run debt avalanche allocation per SBOS Finance Command Center → update all trackers", "done": false }
+]

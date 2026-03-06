@@ -1,0 +1,8 @@
+[
+  { "month": "Oct", "debt": 42000, "paid": 3500 },
+  { "month": "Nov", "debt": 40500, "paid": 4000 },
+  { "month": "Dec", "debt": 39800, "paid": 4200 },
+  { "month": "Jan", "debt": 38638, "paid": 5000 },
+  { "month": "Feb", "debt": 35000, "paid": 5500 },
+  { "month": "Mar", "debt": 38640, "paid": 6000 }
+]

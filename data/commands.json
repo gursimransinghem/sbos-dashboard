@@ -1,0 +1,11 @@
+[
+  { "cmd": "MP", "label": "Morning Plan", "desc": "Daily sweep & briefing" },
+  { "cmd": "QC", "label": "Quick Capture", "desc": "Drop into inbox" },
+  { "cmd": "TR", "label": "Task Review", "desc": "Triage & prioritize" },
+  { "cmd": "HL", "label": "Habit Log", "desc": "Check off habits" },
+  { "cmd": "JL", "label": "Journal Log", "desc": "Daily entry" },
+  { "cmd": "GR", "label": "Goal Review", "desc": "Progress check" },
+  { "cmd": "WR", "label": "Weekly Review", "desc": "Full reflection" },
+  { "cmd": "LA", "label": "Life Areas", "desc": "Pillar health check" },
+  { "cmd": "FS", "label": "Finance Snapshot", "desc": "Update finances" }
+]

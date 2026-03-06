@@ -1,0 +1,10 @@
+[
+  { "name": "Chase Sapphire", "balance": 8420, "original": 12500, "apr": 24.99, "minPay": 250, "limit": 15000, "status": "active", "order": 1, "dueDay": 15 },
+  { "name": "Amex Gold", "balance": 6850, "original": 9200, "apr": 22.49, "minPay": 200, "limit": 10000, "status": "queue", "order": 2, "dueDay": 22 },
+  { "name": "Capital One", "balance": 5200, "original": 7800, "apr": 26.99, "minPay": 175, "limit": 8000, "status": "queue", "order": 3, "dueDay": 8 },
+  { "name": "Discover It", "balance": 4100, "original": 5500, "apr": 21.99, "minPay": 130, "limit": 6500, "status": "queue", "order": 4, "dueDay": 28 },
+  { "name": "Citi Double Cash", "balance": 3800, "original": 4800, "apr": 19.99, "minPay": 110, "limit": 5500, "status": "minimums", "order": 5, "dueDay": 5 },
+  { "name": "BofA Cash Rewards", "balance": 3200, "original": 4200, "apr": 23.49, "minPay": 95, "limit": 5000, "status": "minimums", "order": 6, "dueDay": 18 },
+  { "name": "Wells Fargo", "balance": 3568, "original": 4500, "apr": 20.99, "minPay": 105, "limit": 6000, "status": "minimums", "order": 7, "dueDay": 12 },
+  { "name": "US Bank", "balance": 3500, "original": 3800, "apr": 18.99, "minPay": 100, "limit": 4500, "status": "minimums", "order": 8, "dueDay": 25 }
+]

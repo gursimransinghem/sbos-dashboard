@@ -1,0 +1,9 @@
+[
+  { "area": "Career & Medicine", "icon": "🩺", "status": "Maintaining", "score": 7, "color": "yellow", "note": "FL license renewal urgent" },
+  { "area": "Finance & Wealth", "icon": "💰", "status": "Maintaining", "score": 6, "color": "yellow", "note": "Debt avalanche active, pay day Fri" },
+  { "area": "Health & Fitness", "icon": "🏋️", "status": "Not Started", "score": 5, "color": "gray", "note": "Needs assessment" },
+  { "area": "Personal Growth", "icon": "🧠", "status": "Thriving", "score": 8, "color": "green", "note": "SBOS build, Claude workflows" },
+  { "area": "Relationships", "icon": "❤️", "status": "Maintaining", "score": 6, "color": "yellow", "note": "Needs intentional outreach" },
+  { "area": "Side Projects", "icon": "🚀", "status": "Thriving", "score": 8, "color": "green", "note": "SBOS v2.0 live" },
+  { "area": "Mindfulness", "icon": "🧘", "status": "Not Started", "score": 4, "color": "gray", "note": "Opportunity area" }
+]

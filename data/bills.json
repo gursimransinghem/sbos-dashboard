@@ -1,0 +1,9 @@
+[
+  { "name": "Rent", "amount": 2800, "dueDay": 1, "category": "Housing", "autopay": true, "status": "current" },
+  { "name": "Car Insurance", "amount": 185, "dueDay": 5, "category": "Insurance", "autopay": true, "status": "current" },
+  { "name": "Electric", "amount": 120, "dueDay": 10, "category": "Utilities", "autopay": false, "status": "current" },
+  { "name": "Internet", "amount": 80, "dueDay": 12, "category": "Utilities", "autopay": true, "status": "current" },
+  { "name": "Phone", "amount": 95, "dueDay": 15, "category": "Utilities", "autopay": true, "status": "current" },
+  { "name": "Student Loan", "amount": 450, "dueDay": 20, "category": "Loan", "autopay": true, "status": "current" },
+  { "name": "Health Insurance", "amount": 320, "dueDay": 1, "category": "Insurance", "autopay": true, "status": "current" }
+]

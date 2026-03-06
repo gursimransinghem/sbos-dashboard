@@ -1,0 +1,10 @@
+[
+  { "id": 1, "decision": "Adopt SBOS as primary life operating system", "category": "System", "date": "2026-03-01", "why": "Needed one unified system instead of 7 fragmented Notion workspaces", "impact": "Consolidated all systems; massive clarity and reduced friction" },
+  { "id": 2, "decision": "Use debt avalanche strategy over snowball", "category": "Financial", "date": "2026-02-28", "why": "Higher APR cards cost more over time; math favors avalanche at $30K income", "impact": "$38,638 CC debt targeted for elimination by Dec 2026" },
+  { "id": 3, "decision": "Allocate $8K/month to debt attack", "category": "Financial", "date": "2026-02-28", "why": "Aggressive but sustainable with $30K take-home; leaves room for lifestyle", "impact": "Projected 10-month payoff timeline" },
+  { "id": 4, "decision": "Deploy interactive dashboards via GitHub Pages", "category": "System", "date": "2026-03-03", "why": "Notion lacks interactive visualizations; GitHub Pages is free and fast", "impact": "Real-time visual dashboards embedded directly in Notion" },
+  { "id": 5, "decision": "Implement 4-phase financial plan", "category": "Financial", "date": "2026-02-27", "why": "Sequential approach ensures each phase builds on the previous one", "impact": "Clear roadmap from debt → emergency fund → loans → investing" },
+  { "id": 6, "decision": "Morning Sweep as daily anchor routine", "category": "Personal", "date": "2026-03-02", "why": "Starting the day with full context reduces decision fatigue", "impact": "Calendar + email + tasks + priorities reviewed in one sweep" },
+  { "id": 7, "decision": "Track 7 life areas with health scores", "category": "Personal", "date": "2026-03-03", "why": "Prevents tunnel vision on one area while others deteriorate", "impact": "Balanced attention across Career, Finance, Health, Growth, Relationships, Projects, Mindfulness" },
+  { "id": 8, "decision": "Cancel non-essential subscriptions", "category": "Financial", "date": "2026-03-01", "why": "Every dollar saved accelerates debt payoff", "impact": "Identified $67/mo in potentially cuttable subscriptions" }
+]

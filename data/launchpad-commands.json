@@ -1,0 +1,11 @@
+[
+  { "cmd": "MP", "name": "Morning Plan", "icon": "🌅", "category": "Daily", "desc": "Full morning sweep: calendar, email, tasks, priorities", "color": "#f59e0b", "notionUrl": "https://www.notion.so/3f126d66ea5d4c47a750fc842fbf7ace" },
+  { "cmd": "QC", "name": "Quick Capture", "icon": "⚡", "category": "Daily", "desc": "Rapid thought/task capture to inbox", "color": "#3b82f6", "notionUrl": "https://www.notion.so/caf0800f52844ad481b43a5620d61fdd" },
+  { "cmd": "TR", "name": "Task Review", "icon": "✅", "category": "Daily", "desc": "Review and reprioritize active tasks", "color": "#10b981", "notionUrl": "https://www.notion.so/9dabe3320bf743fdba25867ef8b854f8" },
+  { "cmd": "GR", "name": "Goal Review", "icon": "🎯", "category": "Review", "desc": "Check progress on SMART goals and milestones", "color": "#8b5cf6", "notionUrl": "https://www.notion.so/58c592867b1c4bb397a0a4e6c927cfec" },
+  { "cmd": "WR", "name": "Weekly Review", "icon": "📊", "category": "Review", "desc": "End-of-week reflection, wins, and planning", "color": "#ec4899", "notionUrl": "https://www.notion.so/9aaedcc2893042978469abc3025593b7" },
+  { "cmd": "HL", "name": "Habit Log", "icon": "🔄", "category": "Daily", "desc": "Track daily habits and streaks", "color": "#06b6d4", "notionUrl": "https://www.notion.so/031bc1097013457fba79c1e62014b19f" },
+  { "cmd": "JL", "name": "Journal Log", "icon": "📓", "category": "Daily", "desc": "Daily reflection, mood, and gratitude", "color": "#f97316", "notionUrl": "https://www.notion.so/2200b3eef7ff4796832d23d5ef311be0" },
+  { "cmd": "LA", "name": "Life Areas Check", "icon": "🏛", "category": "Review", "desc": "Health check across 7 life pillars", "color": "#14b8a6", "notionUrl": "https://www.notion.so/b56247f3eeb54fbda3fa293ca59dace6" },
+  { "cmd": "FC", "name": "Finance Check", "icon": "💰", "category": "Finance", "desc": "Quick financial snapshot and debt progress", "color": "#22c55e", "notionUrl": "https://www.notion.so/3177ca56e9cf810b8fd6d240c3103f88" }
+]

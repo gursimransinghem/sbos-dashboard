@@ -1,0 +1,7 @@
+[
+  { "id": 1, "capture": "White Coat Investor — Practice Mgmt Newsletter", "type": "Reference", "source": "Gmail", "status": "Unprocessed" },
+  { "id": 2, "capture": "Panacea Financial — Contract Review Webinar (7pm ET)", "type": "Note", "source": "Gmail", "status": "Unprocessed" },
+  { "id": 3, "capture": "Chartnote — 20 free AI Scribe credits offer", "type": "Note", "source": "Gmail", "status": "Unprocessed" },
+  { "id": 4, "capture": "Progressive Insurance bill paid", "type": "Note", "source": "Gmail", "status": "Filed" },
+  { "id": 5, "capture": "SBOS Phase 2 Complete — full system built", "type": "Artifact", "source": "Claude Chat", "status": "Filed" }
+]

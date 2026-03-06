@@ -1,0 +1,10 @@
+[
+  { "name": "Claude Pro", "cost": 20, "category": "Software", "essential": true, "owner": "Sim" },
+  { "name": "Notion", "cost": 10, "category": "Software", "essential": true, "owner": "Sim" },
+  { "name": "Spotify Family", "cost": 17, "category": "Music", "essential": false, "owner": "Shared" },
+  { "name": "Netflix", "cost": 16, "category": "Streaming", "essential": false, "owner": "Shared" },
+  { "name": "iCloud+", "cost": 3, "category": "Cloud", "essential": true, "owner": "Sim" },
+  { "name": "Gym", "cost": 50, "category": "Health", "essential": true, "owner": "Sim" },
+  { "name": "YouTube Premium", "cost": 14, "category": "Streaming", "essential": false, "owner": "Shared" },
+  { "name": "ChatGPT Plus", "cost": 20, "category": "Software", "essential": false, "owner": "Sim" }
+]

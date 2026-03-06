@@ -8,7 +8,6 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #0d0d12; color: #e2e8f0; font-family: -apple-system, 'SF Pro Display', 'Inter', sans-serif; width: 320px; overflow: hidden; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .7; } }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   .container { padding: 12px; }
   .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
   .logo { font-size: 11px; font-weight: 700; color: #6366f1; letter-spacing: 1px; }
@@ -44,82 +43,7 @@
 </style>
 </head>
 <body>
-<div class="container" id="app"></div>
-<script>
-// ═══ CONFIG - Update these values to match your real data ═══
-const DEBT_TOTAL = 38638;
-const DEBT_REMAINING = 38640;
-const MONTHLY_INCOME = 30000;
-const DEBT_ATTACK = 8000;
-const FREEDOM_DATE = "Dec 2026";
-const TASKS = [
-  { name: "Renew Florida Medical License", priority: "P1", time: "1 hr" },
-  { name: "Handle Apple Trade-In", priority: "P1", time: "15 min" },
-  { name: "Review Rocket Money Feb Report", priority: "P2", time: "15 min" },
-];
-const INBOX_COUNT = 3;
-const ACTIVE_TASKS = 6;
-
-// ═══ RENDER ═══
-function render() {
-  const now = new Date();
-  const paid = DEBT_TOTAL - DEBT_REMAINING;
-  const pct = Math.max(0, Math.round((paid / DEBT_TOTAL) * 100));
-  const monthsLeft = Math.ceil(DEBT_REMAINING / DEBT_ATTACK);
-  const greeting = now.getHours() < 12 ? "Good morning" : now.getHours() < 17 ? "Good afternoon" : "Good evening";
-
-  document.getElementById("app").innerHTML = `
-    <div class="header">
-      <div class="logo">⌘ SBOS</div>
-      <div class="clock">${now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})} · ${now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</div>
-    </div>
-
-    <div class="debt-hero">
-      <div class="debt-label">CC Debt Remaining</div>
-      <div class="debt-amount">$${DEBT_REMAINING.toLocaleString()}</div>
-      <div class="debt-row">
-        <div class="debt-paid">$${paid.toLocaleString()} paid</div>
-        <div class="progress-bg"><div class="progress-fill" style="width:${pct}%"></div></div>
-        <div class="debt-pct">${pct}%</div>
-      </div>
-      <div class="freedom">
-        <span class="freedom-icon">🎯</span>
-        <span class="freedom-text">Freedom: ${FREEDOM_DATE}</span>
-        <span class="freedom-date">~${monthsLeft} months</span>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-title">🔴 Top Priority</div>
-      ${TASKS.map(t => `
-        <div class="task-item">
-          <span class="task-priority ${t.priority.toLowerCase()}">${t.priority}</span>
-          <div>
-            <div class="task-name">${t.name}</div>
-            <div class="task-time">${t.time}</div>
-          </div>
-        </div>
-      `).join('')}
-    </div>
-
-    <div class="stats-row">
-      <div class="stat"><div class="stat-value blue">${ACTIVE_TASKS}</div><div class="stat-label">Active Tasks</div></div>
-      <div class="stat"><div class="stat-value purple">${INBOX_COUNT}</div><div class="stat-label">Inbox</div></div>
-      <div class="stat"><div class="stat-value green">$${(DEBT_ATTACK/1000).toFixed(0)}K</div><div class="stat-label">Debt/Mo</div></div>
-      <div class="stat"><div class="stat-value red">$${(MONTHLY_INCOME/1000).toFixed(0)}K</div><div class="stat-label">Income</div></div>
-    </div>
-
-    <div class="links">
-      <a class="link-btn" href="https://gursimransinghem.github.io/sbos-dashboard/" target="_blank">📊 Dashboard</a>
-      <a class="link-btn" href="https://gursimransinghem.github.io/sbos-dashboard/finance-dashboard.html" target="_blank">💰 Finance</a>
-      <a class="link-btn" href="https://gursimransinghem.github.io/sbos-dashboard/sbos-launchpad.html" target="_blank">⌘ Launch</a>
-      <a class="link-btn" href="https://www.notion.so/3187ca56e9cf818c8ad8ddc0346ad013" target="_blank">🏠 Notion</a>
-    </div>
-  `;
-}
-
-render();
-setInterval(render, 60000);
-</script>
+<div class="container" id="root"></div>
+<script type="module" src="/src/menubar.jsx"></script>
 </body>
 </html>

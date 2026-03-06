@@ -1,0 +1,8 @@
+[
+  { "name": "SBOS Home", "icon": "🏠", "url": "https://www.notion.so/3187ca56e9cf818c8ad8ddc0346ad013" },
+  { "name": "Command Center", "icon": "🧠", "url": "https://www.notion.so/3067ca56e9cf819da9c5ce8945b8634f" },
+  { "name": "Finance HQ", "icon": "💵", "url": "https://www.notion.so/3177ca56e9cf810b8fd6d240c3103f88" },
+  { "name": "Tasks Master", "icon": "✅", "url": "https://www.notion.so/9dabe3320bf743fdba25867ef8b854f8" },
+  { "name": "Interactive Dashboard", "icon": "📈", "url": "https://gursimransinghem.github.io/sbos-dashboard/" },
+  { "name": "Finance Dashboard", "icon": "💰", "url": "https://gursimransinghem.github.io/sbos-dashboard/finance-dashboard.html" }
+]

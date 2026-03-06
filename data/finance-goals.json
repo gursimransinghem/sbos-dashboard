@@ -1,0 +1,6 @@
+[
+  { "name": "CC Debt → $0", "target": 38638, "current": 13338, "phase": 1, "category": "Debt Freedom", "priority": "Critical", "deadline": "Dec 2026" },
+  { "name": "Emergency Fund $10K", "target": 10000, "current": 1200, "phase": 2, "category": "Emergency Fund", "priority": "High", "deadline": "Jun 2027" },
+  { "name": "Max Roth IRA", "target": 7000, "current": 2100, "phase": 4, "category": "Retirement", "priority": "Medium", "deadline": "Dec 2027" },
+  { "name": "House Down Payment", "target": 50000, "current": 0, "phase": 4, "category": "Major Purchase", "priority": "Low", "deadline": "2029" }
+]
