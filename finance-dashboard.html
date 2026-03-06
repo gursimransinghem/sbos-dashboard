@@ -38,14 +38,14 @@ const { useState, useEffect, useRef } = React;
 
 // ═══════════════ DATA ═══════════════
 const DEBTS = [
-  { name: "Chase Sapphire", balance: 8420, original: 12500, apr: 24.99, minPay: 250, limit: 15000, status: "active", order: 1, dueDay: 15 },
-  { name: "Amex Gold", balance: 6850, original: 9200, apr: 22.49, minPay: 200, limit: 10000, status: "queue", order: 2, dueDay: 22 },
-  { name: "Capital One", balance: 5200, original: 7800, apr: 26.99, minPay: 175, limit: 8000, status: "queue", order: 3, dueDay: 8 },
-  { name: "Discover It", balance: 4100, original: 5500, apr: 21.99, minPay: 130, limit: 6500, status: "queue", order: 4, dueDay: 28 },
-  { name: "Citi Double Cash", balance: 3800, original: 4800, apr: 19.99, minPay: 110, limit: 5500, status: "minimums", order: 5, dueDay: 5 },
-  { name: "BofA Cash Rewards", balance: 3200, original: 4200, apr: 23.49, minPay: 95, limit: 5000, status: "minimums", order: 6, dueDay: 18 },
-  { name: "Wells Fargo", balance: 3568, original: 4500, apr: 20.99, minPay: 105, limit: 6000, status: "minimums", order: 7, dueDay: 12 },
-  { name: "US Bank", balance: 3500, original: 3800, apr: 18.99, minPay: 100, limit: 4500, status: "minimums", order: 8, dueDay: 25 },
+  { name: "Chase Sapphire", balance: 6360, original: 12500, apr: 24.99, minPay: 250, limit: 15000, status: "active", order: 1, dueDay: 15 },
+  { name: "Amex Gold", balance: 6650, original: 9200, apr: 22.49, minPay: 200, limit: 10000, status: "queue", order: 3, dueDay: 22 },
+  { name: "Capital One", balance: 0, original: 7800, apr: 26.99, minPay: 0, limit: 8000, status: "paid-off", order: 0, dueDay: 8 },
+  { name: "Discover It", balance: 3970, original: 5500, apr: 21.99, minPay: 130, limit: 6500, status: "queue", order: 4, dueDay: 28 },
+  { name: "Citi Double Cash", balance: 3690, original: 4800, apr: 19.99, minPay: 110, limit: 5500, status: "minimums", order: 6, dueDay: 5 },
+  { name: "BofA Cash Rewards", balance: 3105, original: 4200, apr: 23.49, minPay: 95, limit: 5000, status: "queue", order: 2, dueDay: 18 },
+  { name: "Wells Fargo", balance: 3463, original: 4500, apr: 20.99, minPay: 105, limit: 6000, status: "minimums", order: 5, dueDay: 12 },
+  { name: "US Bank", balance: 3400, original: 3800, apr: 18.99, minPay: 100, limit: 4500, status: "minimums", order: 7, dueDay: 25 },
 ];
 
 const TOTAL_DEBT = DEBTS.reduce((s, d) => s + d.balance, 0);
@@ -79,7 +79,7 @@ const TOTAL_SUBS = SUBSCRIPTIONS.reduce((s, sub) => s + sub.cost, 0);
 const ESSENTIAL_SUBS = SUBSCRIPTIONS.filter(s => s.essential).reduce((s, sub) => s + sub.cost, 0);
 
 const GOALS = [
-  { name: "CC Debt → $0", target: 38638, current: DEBT_PAID, phase: 1, category: "Debt Freedom", priority: "Critical", deadline: "Dec 2026" },
+  { name: "CC Debt → $0", target: TOTAL_ORIGINAL, current: DEBT_PAID, phase: 1, category: "Debt Freedom", priority: "Critical", deadline: "Dec 2026" },
   { name: "Emergency Fund $10K", target: 10000, current: 1200, phase: 2, category: "Emergency Fund", priority: "High", deadline: "Jun 2027" },
   { name: "Max Roth IRA", target: 7000, current: 2100, phase: 4, category: "Retirement", priority: "Medium", deadline: "Dec 2027" },
   { name: "House Down Payment", target: 50000, current: 0, phase: 4, category: "Major Purchase", priority: "Low", deadline: "2029" },
@@ -98,7 +98,7 @@ const BUDGET = {
 const MONTHS_DATA = [
   { month: "Oct", debt: 42000, paid: 3500 }, { month: "Nov", debt: 40500, paid: 4000 },
   { month: "Dec", debt: 39800, paid: 4200 }, { month: "Jan", debt: 38638, paid: 5000 },
-  { month: "Feb", debt: 35000, paid: 5500 }, { month: "Mar", debt: TOTAL_DEBT, paid: 6000 },
+  { month: "Feb", debt: 35000, paid: 5500 }, { month: "Mar", debt: TOTAL_DEBT, paid: 8000 },
 ];
 
 // ═══════════════ COMPONENTS ═══════════════
@@ -314,7 +314,7 @@ function FinanceDashboard() {
               SBOS Finance Command Center
             </span>
           </h1>
-          <p className="text-gray-500 text-sm mt-1">Phase 1 — Debt Avalanche Active</p>
+          <p className="text-gray-500 text-sm mt-1">Phase 1 — Debt Avalanche Active — Capital One ELIMINATED</p>
         </div>
         <div className="text-right">
           <div className="text-lg font-mono text-gray-300">{time.toLocaleTimeString()}</div>
@@ -393,7 +393,7 @@ function FinanceDashboard() {
                     <div key={i} className="fade-up" style={{ animationDelay: `${i * .05}s` }}>
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
-                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${d.status === "active" ? "bg-red-900 text-red-300" : d.status === "queue" ? "bg-yellow-900 text-yellow-300" : "bg-gray-800 text-gray-400"}`}>{d.order}</span>
+                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${d.status === "paid-off" ? "bg-green-900 text-green-300" : d.status === "active" ? "bg-red-900 text-red-300" : d.status === "queue" ? "bg-yellow-900 text-yellow-300" : "bg-gray-800 text-gray-400"}`}>{d.status === "paid-off" ? "✓" : d.order}</span>
                           <span className="text-sm font-medium">{d.name}</span>
                           <span className="text-xs px-2 py-0.5 rounded-full bg-red-900 bg-opacity-50 text-red-300">{d.apr}% APR</span>
                         </div>
