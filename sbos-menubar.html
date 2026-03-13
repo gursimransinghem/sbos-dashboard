@@ -45,10 +45,20 @@
 </head>
 <body>
 <div class="container" id="app"></div>
+<script src="notion-sync.js"></script>
 <script>
+// ═══ LOCALSTORAGE PERSISTENCE ═══
+function loadMenuData() {
+  try { const v = localStorage.getItem('sbos_menubar'); return v ? JSON.parse(v) : null; } catch { return null; }
+}
+function saveMenuData(data) {
+  try { localStorage.setItem('sbos_menubar', JSON.stringify({ ...data, lastUpdated: new Date().toISOString() })); } catch {}
+}
+
 // ═══ CONFIG - Update these values to match your real data ═══
-const DEBT_TOTAL = 38638;
-const DEBT_REMAINING = 38640;
+const saved = loadMenuData();
+const DEBT_TOTAL = saved?.debtTotal || 38638;
+const DEBT_REMAINING = saved?.debtRemaining || 38640;
 const MONTHLY_INCOME = 30000;
 const DEBT_ATTACK = 8000;
 const FREEDOM_DATE = "Dec 2026";

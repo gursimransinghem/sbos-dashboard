@@ -8,18 +8,41 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+  <script src="notion-sync.js"></script>
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
     .fade-in { animation: fadeIn 0.5s ease-in; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .hover-lift { transition: all 0.2s ease; }
+    .layout-toggle { cursor: pointer; padding: 4px 10px; border-radius: 6px; font-size: 12px; border: 1px solid #e5e7eb; background: white; color: #6b7280; transition: all 0.2s; }
+    .layout-toggle:hover { border-color: #6366f1; color: #6366f1; }
+    .layout-toggle.active { background: #6366f1; color: white; border-color: #6366f1; }
   </style>
 </head>
 <body class="bg-gray-50">
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ═══════════════ TOAST NOTIFICATIONS ═══════════════
+const notyf = new Notyf({ duration: 2500, position: { x: 'right', y: 'top' }, ripple: false, types: [
+  { type: 'success', background: '#10b981' },
+  { type: 'warning', background: '#f59e0b', icon: false },
+  { type: 'info', background: '#6366f1', icon: false },
+]});
+
+// ═══════════════ LOCALSTORAGE PERSISTENCE ═══════════════
+const STORAGE_KEYS = { tasks: 'sbos_tasks', inbox: 'sbos_inbox', goals: 'sbos_goals', lifeAreas: 'sbos_life_areas', gridLayout: 'sbos_grid_layout', editMode: 'sbos_edit_mode' };
+
+function loadState(key, fallback) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch { return fallback; }
+}
+function saveState(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+}
 
 const TASKS = [
   { id: 1, task: "Renew Florida Medical License", priority: "P1", time: "1 hour", status: "Next Action", context: "Computer/Phone", firstStep: "Go to FL DOH license renewal portal → check expiration → gather CE documentation → submit renewal application", done: false },
@@ -65,6 +88,19 @@ const COMMANDS = [
   { cmd: "LA", label: "Life Areas", desc: "Pillar health check" },
   { cmd: "FS", label: "Finance Snapshot", desc: "Update finances" },
 ];
+
+const SectionWrapper = ({ id, title, editMode, isVisible, toggleSection, children }) => (
+  <div className="mb-6">
+    {editMode && (
+      <div className="flex items-center gap-2 mb-2 cursor-pointer select-none" onClick={() => toggleSection(id)}>
+        <span className="text-xs font-medium text-indigo-500">{isVisible(id) ? '▼' : '▶'}</span>
+        <span className="text-xs font-medium text-indigo-500">{title}</span>
+        <span className="text-xs text-gray-400">({isVisible(id) ? 'visible' : 'hidden'})</span>
+      </div>
+    )}
+    {isVisible(id) && children}
+  </div>
+);
 
 const pColor = (p) => p === "P1" ? "bg-red-100 text-red-700 border-red-300" : p === "P2" ? "bg-yellow-100 text-yellow-700 border-yellow-300" : "bg-gray-100 text-gray-600 border-gray-300";
 const sColor = (s) => s === "Filed" ? "bg-green-100 text-green-700" : s === "Unprocessed" ? "bg-red-100 text-red-700" : "bg-yellow-100 text-yellow-700";
@@ -125,18 +161,52 @@ const LifeAreaRadar = ({ areas }) => {
 };
 
 function SBOSDashboard() {
-  const [tasks, setTasks] = useState(TASKS);
+  const [tasks, setTasks] = useState(() => loadState(STORAGE_KEYS.tasks, TASKS));
+  const [inbox, setInbox] = useState(() => loadState(STORAGE_KEYS.inbox, INBOX));
   const [expandedTask, setExpandedTask] = useState(null);
   const [now, setNow] = useState(new Date());
+  const [editMode, setEditMode] = useState(false);
+
   const activeTasks = tasks.filter(t => !t.done).sort((a, b) => a.priority < b.priority ? -1 : 1);
   const doneTasks = tasks.filter(t => t.done);
-  const toggleTask = (id) => setTasks(prev => prev.map(t => t.id === id ? { ...t, done: !t.done } : t));
+
+  const toggleTask = (id) => {
+    setTasks(prev => {
+      const updated = prev.map(t => t.id === id ? { ...t, done: !t.done } : t);
+      const task = updated.find(t => t.id === id);
+      if (task.done) { notyf.success(`Completed: ${task.task}`); } else { notyf.open({ type: 'info', message: `Reopened: ${task.task}` }); }
+      saveState(STORAGE_KEYS.tasks, updated);
+      return updated;
+    });
+  };
+
+  const processInboxItem = (id) => {
+    setInbox(prev => {
+      const updated = prev.map(item => item.id === id ? { ...item, status: item.status === 'Filed' ? 'Unprocessed' : 'Filed' } : item);
+      const item = updated.find(i => i.id === id);
+      if (item.status === 'Filed') { notyf.success(`Filed: ${item.capture.substring(0, 30)}...`); }
+      saveState(STORAGE_KEYS.inbox, updated);
+      return updated;
+    });
+  };
+
   const timeMap = { "5 min": 5, "15 min": 15, "30 min": 30, "1 hour": 60, "2+ hrs": 120 };
   const totalMin = activeTasks.reduce((s, t) => s + (timeMap[t.time] || 30), 0);
   const hrs = Math.floor(totalMin / 60), mins = totalMin % 60;
   const avgScore = (LIFE_AREAS.reduce((s, a) => s + a.score, 0) / LIFE_AREAS.length).toFixed(1);
 
   useEffect(() => { const t = setInterval(() => setNow(new Date()), 60000); return () => clearInterval(t); }, []);
+
+  const [hiddenSections, setHiddenSections] = useState(() => loadState(STORAGE_KEYS.gridLayout, []));
+
+  const toggleSection = (section) => {
+    setHiddenSections(prev => {
+      const updated = prev.includes(section) ? prev.filter(s => s !== section) : [...prev, section];
+      saveState(STORAGE_KEYS.gridLayout, updated);
+      return updated;
+    });
+  };
+  const isVisible = (section) => !hiddenSections.includes(section);
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8 max-w-6xl mx-auto fade-in">
@@ -146,9 +216,16 @@ function SBOSDashboard() {
           <h1 className="text-3xl font-bold text-gray-900">🧠 SBOS Command Center</h1>
           <p className="text-gray-500 mt-1">Tuesday, March 3, 2026 — {now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</p>
         </div>
-        <div className="flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-          Morning Sweep Complete
+        <div className="flex items-center gap-3">
+          <button onClick={() => { setEditMode(!editMode); if (!editMode) notyf.open({ type: 'info', message: 'Click section headers to show/hide widgets' }); }} className={`layout-toggle ${editMode ? 'active' : ''}`}>
+            {editMode ? '✓ Done' : '⚙ Customize'}
+          </button>
+          <button onClick={() => { if (confirm('Reset all saved data to defaults?')) { Object.values(STORAGE_KEYS).forEach(k => localStorage.removeItem(k)); setTasks(TASKS); setInbox(INBOX); notyf.open({ type: 'warning', message: 'Data reset to defaults' }); location.reload(); } }}
+            className="layout-toggle" title="Reset saved data">↺ Reset</button>
+          <div className="flex items-center gap-2 bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+            Morning Sweep Complete
+          </div>
         </div>
       </div>
 
@@ -166,7 +243,7 @@ function SBOSDashboard() {
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm text-center hover-lift">
           <div className="text-xs font-medium text-gray-400 uppercase tracking-wider">Inbox</div>
-          <div className="text-xl font-bold text-orange-600 mt-1">{INBOX.filter(i=>i.status==="Unprocessed").length}</div>
+          <div className="text-xl font-bold text-orange-600 mt-1">{inbox.filter(i=>i.status==="Unprocessed").length}</div>
           <div className="text-xs text-gray-500">unprocessed</div>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm text-center hover-lift">
@@ -182,7 +259,8 @@ function SBOSDashboard() {
       </div>
 
       {/* Priority Chart + Task Donut */}
-      <div className="grid md:grid-cols-3 gap-4 mb-6">
+      <SectionWrapper id="taskDist" title="Task Distribution" editMode={editMode} isVisible={isVisible} toggleSection={toggleSection}>
+      <div className="grid md:grid-cols-3 gap-4">
         <div className="md:col-span-2 bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
           <div className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">Task Distribution</div>
           <div className="space-y-3">
@@ -206,9 +284,11 @@ function SBOSDashboard() {
           <MiniDonut done={doneTasks.length} total={tasks.length} size={100} />
         </div>
       </div>
+      </SectionWrapper>
 
       {/* Active Tasks Table */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm mb-6 overflow-hidden">
+      <SectionWrapper id="tasks" title="Active Tasks" editMode={editMode} isVisible={isVisible} toggleSection={toggleSection}>
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">✅ Active Tasks — Priority Board</h2>
           <span className="text-xs text-gray-500">{activeTasks.length} remaining</span>
@@ -274,9 +354,11 @@ function SBOSDashboard() {
           </table>
         </div>
       </div>
+      </SectionWrapper>
 
       {/* Goals + Life Areas Row */}
-      <div className="grid md:grid-cols-2 gap-6 mb-6">
+      <SectionWrapper id="goalsLife" title="Goals & Life Areas" editMode={editMode} isVisible={isVisible} toggleSection={toggleSection}>
+      <div className="grid md:grid-cols-2 gap-6">
         {/* Goals */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100">
@@ -320,18 +402,20 @@ function SBOSDashboard() {
           </div>
         </div>
       </div>
+      </SectionWrapper>
 
       {/* Inbox + Financial Row */}
-      <div className="grid md:grid-cols-2 gap-6 mb-6">
+      <SectionWrapper id="inboxFinance" title="Inbox & Financial" editMode={editMode} isVisible={isVisible} toggleSection={toggleSection}>
+      <div className="grid md:grid-cols-2 gap-6">
         {/* Inbox */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-gray-900">📥 Quick Capture Inbox</h2>
-            <span className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-700 font-medium">{INBOX.filter(i=>i.status==="Unprocessed").length} unprocessed</span>
+            <span className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-700 font-medium">{inbox.filter(i=>i.status==="Unprocessed").length} unprocessed</span>
           </div>
           <div>
-            {INBOX.map((item) => (
-              <div key={item.id} className="px-5 py-3 flex items-center justify-between hover:bg-gray-50 border-b border-gray-50" style={{ transition: "background 0.2s" }}>
+            {inbox.map((item) => (
+              <div key={item.id} className="px-5 py-3 flex items-center justify-between hover:bg-gray-50 border-b border-gray-50" style={{ transition: "background 0.2s", cursor: "pointer" }} onClick={() => processInboxItem(item.id)} title="Click to toggle filed/unprocessed">
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="font-medium text-sm text-gray-900" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.capture}</div>
                   <div className="text-xs text-gray-500 mt-0.5">{item.source} — {item.type}</div>
@@ -369,9 +453,11 @@ function SBOSDashboard() {
           </div>
         </div>
       </div>
+      </SectionWrapper>
 
       {/* Commands */}
-      <div className="rounded-xl p-5 text-white mb-6" style={{ background: "linear-gradient(135deg, #111827, #1f2937)" }}>
+      <SectionWrapper id="commands" title="SBOS Commands" editMode={editMode} isVisible={isVisible} toggleSection={toggleSection}>
+      <div className="rounded-xl p-5 text-white" style={{ background: "linear-gradient(135deg, #111827, #1f2937)" }}>
         <h2 className="text-lg font-semibold mb-3">🛠️ SBOS Commands</h2>
         <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-9 gap-3">
           {COMMANDS.map((c) => (
@@ -383,8 +469,14 @@ function SBOSDashboard() {
           ))}
         </div>
       </div>
+      </SectionWrapper>
 
-      <div className="text-center text-xs text-gray-400 mt-6 pb-4">SBOS v2.0 — Phase 2 Complete — Powered by Claude — March 2026</div>
+      <div className="text-center text-xs text-gray-400 mt-6 pb-4">
+        SBOS v2.0 — Phase 2 Complete — Powered by Claude — March 2026
+        {window.SBOS_NOTION?.config?.enabled && (
+          <span className="ml-2 text-indigo-400">• Notion Sync Active</span>
+        )}
+      </div>
     </div>
   );
 }
